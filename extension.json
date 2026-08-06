@@ -54,6 +54,18 @@
 				"darkmode-default-link-tooltip"
 			]
 		},
+		"ext.DarkMode.EmojiWrap": {
+			"es6": true,
+			"packageFiles": [
+				"scripts/emojiWrap.js"
+			]
+		},
+		"ext.DarkMode.AddBackground": {
+			"es6": true,
+			"packageFiles": [
+				"scripts/addBackground.js"
+			]
+		},
 		"ext.DarkMode.styles": {
 			"styles": [
 				"ext.DarkMode.less"
@@ -68,6 +80,10 @@
 		"DarkModeTogglePosition": {
 			"value": "personal",
 			"description": "Where the dark mode toggle link should be placed: 'personal' – next to the user talk page link in personal URLs. 'footer' – in the footer, usually after the 'Disclaimer' link. 'sidebar' – in the sidebar within the navigation portlet."
+		},
+		"DarkModeFloatingButton": {
+			"value": true,
+			"description": "Whether to show a floating dark mode toggle button in the bottom-right corner of the page, in addition to the link placed by DarkModeTogglePosition."
 		}
 	},
 	"manifest_version": 2

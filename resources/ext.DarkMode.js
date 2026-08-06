@@ -4,6 +4,11 @@
 $( () => {
 	// eslint-disable-next-line no-jquery/no-global-selector
 	const $darkModeLink = $( '.ext-darkmode-link' );
+	let $darkModeButton = null;
+
+	function isDarkModeEnabled() {
+		return document.documentElement.classList.contains( 'skin-theme-clientpref-night' );
+	}
 
 	/**
 	 * @param {boolean} darkMode is dark mode currently enabled?
@@ -33,9 +38,20 @@ $( () => {
 			) );
 	}
 
-	$darkModeLink.on( 'click', ( e ) => {
-		e.preventDefault();
+	/**
+	 * @param {boolean} darkMode is dark mode currently enabled?
+	 */
+	function updateButton( darkMode ) {
+		if ( !$darkModeButton ) {
+			return;
+		}
+		$darkModeButton.attr( 'title', mw.msg( darkMode ?
+			'darkmode-default-link-tooltip' :
+			'darkmode-link-tooltip'
+		) );
+	}
 
+	function toggleDarkMode() {
 		const docClassList = document.documentElement.classList;
 		// NOTE: this must be on <html> element because the CSS filter creates
 		// a new stacking context.
@@ -61,14 +77,28 @@ $( () => {
 		}
 
 		updateLink( darkMode );
+		updateButton( darkMode );
 
 		// Update the mobile theme-color
 		// eslint-disable-next-line no-jquery/no-global-selector
 		$( 'meta[name="theme-color"]' ).attr( 'content', darkMode ? '#000000' : '#eaecf0' );
+	}
+
+	$darkModeLink.on( 'click', ( e ) => {
+		e.preventDefault();
+		toggleDarkMode();
 	} );
 
-	function isDarkModeEnabled() {
-		return document.documentElement.classList.contains( 'skin-theme-clientpref-night' );
+	if ( mw.config.get( 'DarkModeFloatingButton' ) ) {
+		$darkModeButton = $( '<a>' )
+			.addClass( 'ext-darkmode-button' )
+			.attr( { href: '#', role: 'button' } )
+			.on( 'click', ( e ) => {
+				e.preventDefault();
+				toggleDarkMode();
+			} )
+			.appendTo( document.body );
+		updateButton( isDarkModeEnabled() );
 	}
 
 	if ( !mw.user.isNamed() && isDarkModeEnabled() ) {

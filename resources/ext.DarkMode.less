@@ -36,6 +36,45 @@
 		}
 	}
 
+	.ext-darkmode-button {
+		position: fixed;
+		right: 8px;
+		bottom: 24px;
+		z-index: 100;
+		width: 32px;
+		height: 32px;
+		line-height: 2;
+		text-align: center;
+		text-decoration: none;
+		cursor: pointer;
+		user-select: none;
+		background-color: #fff;
+		border: 1px solid #a2a9b1;
+		border-radius: 50%;
+
+		&::before {
+			content: '\263E'; /* Moon icon */
+			display: inline-block;
+
+			.skin-theme-clientpref-night & {
+				content: '\263C'; /* Sun icon */
+			}
+		}
+	}
+
+	/* Light backing behind transparent content images */
+	.darkmode-image-wrap {
+		position: relative;
+		display: inline-block;
+	}
+
+	.darkmode-image-background {
+		position: absolute;
+		display: inline-block;
+		margin: 0;
+		background: transparent;
+	}
+
 	/* START OF DARKMODE STYLES */
 	.skin-theme-clientpref-night,
 	.client-darkmode {
@@ -141,6 +180,16 @@
 			border: 0;
 		}
 
+		/* Light backing behind transparent content images */
+		.darkmode-image-background {
+			background: url( images/background.svg ) repeat;
+		}
+
+		/* Inside .mw-no-invert the image is not inverted, so no backing is needed. */
+		.mw-no-invert .darkmode-image-background {
+			background: transparent;
+		}
+
 		/* Content image (thumbnail) SVGs */
 		/* `*not( .mbox-image )` exception doesn't work for unclear reasons */
 		.image img[ src*='svg' ] {
@@ -194,6 +243,12 @@
 		body {
 			background: #fff;
 		}
+	}
+}
+
+@media print {
+	.ext-darkmode-button {
+		display: none;
 	}
 }
 

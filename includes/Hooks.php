@@ -41,6 +41,9 @@ class Hooks implements
 	/** @var string */
 	private $linkPosition;
 
+	/** @var bool */
+	private $floatingButton;
+
 	/** @var UserOptionsLookup */
 	private $userOptionsLookup;
 
@@ -53,6 +56,7 @@ class Hooks implements
 		UserOptionsLookup $userOptionsLookup
 	) {
 		$this->linkPosition = $options->get( 'DarkModeTogglePosition' );
+		$this->floatingButton = (bool)$options->get( 'DarkModeFloatingButton' );
 		$this->userOptionsLookup = $userOptionsLookup;
 	}
 
@@ -150,8 +154,11 @@ class Hooks implements
 			return;
 		}
 
-		$out->addModules( 'ext.DarkMode' );
+		$out->addModules( [ 'ext.DarkMode', 'ext.DarkMode.EmojiWrap', 'ext.DarkMode.AddBackground' ] );
 		$out->addModuleStyles( 'ext.DarkMode.styles' );
+
+		$out->addMeta( 'color-scheme', $this->isDarkModeActive( $skin ) ? 'dark' : 'light' );
+		$out->addJsConfigVars( [ 'DarkModeFloatingButton' => $this->floatingButton ] );
 
 		if ( $this->isDarkModeActive( $skin ) ) {
 			// The class must be on the <html> element because the CSS filter creates a new stacking context.
